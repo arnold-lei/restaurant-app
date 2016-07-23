@@ -69,7 +69,7 @@
 							<div class="form-group">
 								<label for="">Pick a time </label>
 								<div class="input-append date" id="time">
-							  	<input type="text" class="form-control" id="reserve_time">
+							  	<input type="text" class="time ui-timepicker-input" autocomplete="off">
 							  	<span class="add-on"><i class="icon-th"></i></span>
 							</div>							
 							</div>
@@ -96,9 +96,16 @@
 
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
 <script type="text/javascript">
-	$('#time').timepicker();
+	$('.time').timepicker();
 
-	$('#datepicker').datepicker('show');
+	$('#datepicker').datepicker({ 
+		'scrollDefault': 'now',
+		'showDuration': true,
+		'disableTimeRanges': [
+	        ['1am', '2am'],
+	        ['3am', '4:01am']
+	    ] 
+	});
 
 	// In this code below we create the Front-end Javascript which "POSTS" our form data to our express server.
 	// In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
