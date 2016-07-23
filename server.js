@@ -34,6 +34,8 @@ app.get('/api/waitlist', function(req, res){
   res.json(waitlist);
 })
 
+app.use(express.static(__dirname + '/public'));
+
 app.listen(PORT, function(){
   console.log('App listening on PORT ' + PORT);
 })
