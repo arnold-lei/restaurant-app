@@ -7,6 +7,6 @@ CREATE TABLE reservations(
   name VARCHAR(100) NULL,
   phone INT(10) NULL,
   email VARCHAR(100) NULL,
-  unique VARCHAR(100) NULL,
+  unique_res VARCHAR(100) NULL,
   PRIMARY KEY(id)
 );
