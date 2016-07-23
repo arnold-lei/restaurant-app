@@ -12,7 +12,7 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 var reservations = [];
 
-var waitlist = [{}];
+var waitlist = [];
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
@@ -38,6 +38,8 @@ var query = 'SELECT * FROM reservations';
     }
   });
 
+  
+
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, 'index.html'));
 })
@@ -50,12 +52,42 @@ app.get('/reserve', function(req, res){
   res.sendFile(path.join(__dirname, 'reserve.html'));
 })
 
-app.get('/api/reservations', function(req, res){
-  res.json(reservations);
+app.get('/api/tables', function(req, res){
+  //res.json(reservations);
+  var query = 'SELECT * FROM reservations';
+  var info = [];
+  connection.query(query, function(err, rows, fields) {
+    if (err) throw err;
+
+    for (var i in rows) {
+        // console.log('Product ID: ', rows[i].id, ' Name: ', rows[i].name, ' Phone: ', rows[i].phone, ' Email: ', rows[i].email, ' Unique: ', rows[i].unique_res);
+        info.push(rows[i]);
+    }
+    res.json(info);
+  });
 })
 
 app.get('/api/waitlist', function(req, res){
   res.json(waitlist);
+})
+
+app.post('/api/tables', function(req, res){
+ var newReservation = req.body;
+ 
+ console.log(newReservation);
+ 
+ //reservations.push(newRes);
+ 
+ res.json(newReservation);
+
+ connection.query("INSERT INTO reservations SET ?", {
+    name: newReservation.customerName,
+    phone: newReservation.phoneNumber,
+    email: newReservation.customerEmail,
+    unique_res: newReservation.customerID
+  }, function(err, res) {
+      console.log("Your reservation was successfully inserted into the database!");
+  });
 })
 
 app.listen(PORT, function(){
